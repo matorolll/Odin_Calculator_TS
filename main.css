@@ -63,6 +63,11 @@ body{
     font-size: 25px;
     border:2px;
 }
+.keyboard button:hover{
+    font-size: 28px;
+    background-color: rgb(181, 181, 181);
+    border: 1px solid rgb(109, 108, 108);
+}
 .keyboard button:nth-child(18){
     border-radius: 0 0 20% 0/0 0 10% 0;
 }
