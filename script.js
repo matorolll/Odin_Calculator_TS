@@ -33,10 +33,6 @@ let updateScreen = () =>{
 **/
 
 
-
-
-
-
 let addNumber = (number) =>{
   numberBuffer+=number
   document.querySelector('.input').innerHTML = numberBuffer;
