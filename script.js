@@ -49,7 +49,6 @@ let makeOperation = (operation) =>{
   }
 }
 
-
 let numberBuffer = '';
 let operationBuffer = '';
 let outputBuffer = '';
