@@ -1,67 +1,76 @@
 const buttons = document.querySelectorAll('button');
 
-/**let number1 = '';
-let buffer2 = '';
-
-
-let makeOperation = (operation) =>{
-  if (document.querySelector('.output').innerHTML === ''){
-    buffer2+=operation;
-    document.querySelector('.output').innerHTML = number1+' '+buffer2;
-    number1 = ''
-    buffer2 = ''
-  }
-  else{
-    buffer2+=operation;
-    let lastbuffer = parseInt(
-      document.querySelector('.output').innerHTML.slice(0, -1));
-
-    console.log(lastbuffer); 
-    number1 = ''
-    buffer2 = ''
-  }
-
-  //buffer2+=operation;
-  //document.querySelector('.output').innerHTML = number1+' '+buffer2;
-  //number1 = ''
-  //buffer2 = ''
-}
-
-let updateScreen = () =>{
-  document.querySelector('.input').innerHTML = number1;
-}
-**/
 
 let addNumber = (number) =>{
+  console.log("adding number")
+  if(/^0+$/.test(numberBuffer)){ //preventing only zero
+    numberBuffer = '';
+  }
+
   numberBuffer+=number
   document.querySelector('.input').innerHTML = numberBuffer;
 }
 
+
+
+
 let makeOperation = (operation) =>{
-  if (outputBuffer != ''){
-    
+  console.log("making operation")
+  if(document.querySelector('.output').innerHTML == ''){
+    document.querySelector('.output').innerHTML = 0
   }
+
+
+  if(operation === "Reset"){
+    console.log("reset")
+  }
+  if(operation === "Clear"){
+    console.log("clear")
+  }
+
+
+  if(operation === "="){
+    console.log("wykoknaj")
+    operationBuffer = '';
+    lastNumber = parseInt(lastNumber) + parseInt(numberBuffer);
+    numberBuffer = 0;
+    document.querySelector('.output').innerHTML = lastNumber;
+    document.querySelector('.input').innerHTML = '';
+
+  }
+  if(operation === "+"){
+    console.log("dodawaj")
+
+  }
+
+
+
   else{
     operationBuffer = operation
-    outputBuffer = numberBuffer + ' ' + operationBuffer;
-    document.querySelector('.output').innerHTML = outputBuffer;
-    numberBuffer = '';
+    lastNumber = numberBuffer;
+    document.querySelector('.output').innerHTML = lastNumber + ' ' + operationBuffer;
+    numberBuffer = 0;
+    document.querySelector('.input').innerHTML = numberBuffer;
+
   }
 }
 
-let numberBuffer = '';
-let operationBuffer = '';
-let outputBuffer = '';
+let numberBuffer = 0;
+let operationBuffer = 0;
+let lastNumber = 0;
 
 buttons.forEach(function(button) {
   button.addEventListener('click', function() {
     const buttonContent = button.innerHTML;
 
-    if(parseInt(buttonContent)){
-      addNumber(buttonContent)
+    if(parseInt(buttonContent) || buttonContent == 0){
+      addNumber(buttonContent);
     }
     else{
       makeOperation(buttonContent);
     }
+    console.log("numberbuffer: "+numberBuffer+" operationBuffer: "+operationBuffer+" lastNumber: "+lastNumber);
+    console.log("numberbuffer: "+typeof numberBuffer +" operationBuffer: "+typeof operationBuffer+" lastNumber: "+typeof lastNumber);
+
   });
 });
