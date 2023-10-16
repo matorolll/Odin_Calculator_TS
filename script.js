@@ -1,62 +1,9 @@
 const buttons = document.querySelectorAll('button');
-
-
-let addNumber = (number) =>{
-  console.log("adding number")
-  if(/^0+$/.test(numberBuffer)){ //preventing only zero
-    numberBuffer = '';
-  }
-
-  numberBuffer+=number
-  document.querySelector('.input').innerHTML = numberBuffer;
-}
-
-
-
-
-let makeOperation = (operation) =>{
-  console.log("making operation")
-  if(document.querySelector('.output').innerHTML == ''){
-    document.querySelector('.output').innerHTML = 0
-  }
-
-
-  if(operation === "Reset"){
-    console.log("reset")
-  }
-  if(operation === "Clear"){
-    console.log("clear")
-  }
-
-
-  if(operation === "="){
-    console.log("wykoknaj")
-    operationBuffer = '';
-    lastNumber = parseInt(lastNumber) + parseInt(numberBuffer);
-    numberBuffer = 0;
-    document.querySelector('.output').innerHTML = lastNumber;
-    document.querySelector('.input').innerHTML = '';
-
-  }
-  if(operation === "+"){
-    console.log("dodawaj")
-
-  }
-
-
-
-  else{
-    operationBuffer = operation
-    lastNumber = numberBuffer;
-    document.querySelector('.output').innerHTML = lastNumber + ' ' + operationBuffer;
-    numberBuffer = 0;
-    document.querySelector('.input').innerHTML = numberBuffer;
-
-  }
-}
+let output = document.querySelector('.output')
+let input = document.querySelector('.input')
 
 let numberBuffer = 0;
-let operationBuffer = 0;
+let operationBuffer = '';
 let lastNumber = 0;
 
 buttons.forEach(function(button) {
@@ -64,13 +11,90 @@ buttons.forEach(function(button) {
     const buttonContent = button.innerHTML;
 
     if(parseInt(buttonContent) || buttonContent == 0){
-      addNumber(buttonContent);
+      pressedNumber(buttonContent);
     }
     else{
-      makeOperation(buttonContent);
+      pressedOperation(buttonContent);
     }
-    console.log("numberbuffer: "+numberBuffer+" operationBuffer: "+operationBuffer+" lastNumber: "+lastNumber);
-    console.log("numberbuffer: "+typeof numberBuffer +" operationBuffer: "+typeof operationBuffer+" lastNumber: "+typeof lastNumber);
-
+    //console.log("numberbuffer: "+numberBuffer+" operationBuffer: "+operationBuffer+" lastNumber: "+lastNumber);
+    //console.log("numberbuffer: "+typeof numberBuffer +" operationBuffer: "+typeof operationBuffer+" lastNumber: "+typeof lastNumber);
   });
 });
+
+
+let pressedNumber = (number) =>{
+  if(/^0+$/.test(numberBuffer)) numberBuffer = '';
+  numberBuffer+=parseFloat(number)
+  document.querySelector('.input').innerHTML = numberBuffer;
+}
+
+
+let performOperation = (operationBuffer) =>{
+  switch (operationBuffer) {
+    case '+':
+      lastNumber = parseFloat(lastNumber) + parseFloat(numberBuffer);
+      break;
+    case '-':
+      lastNumber = parseFloat(lastNumber) - parseFloat(numberBuffer);
+      break;
+    case 'x':
+      lastNumber = parseFloat(lastNumber) * parseFloat(numberBuffer);
+      break;
+    case '/':
+      lastNumber = parseFloat(lastNumber) / parseFloat(numberBuffer);
+      break;
+    case 'Pow':
+      lastNumber = parseFloat(lastNumber) ** parseFloat(numberBuffer);
+      break;
+    case 'Mod':
+      lastNumber = parseFloat(lastNumber) % parseFloat(numberBuffer);
+      break;                    
+    default: break;
+  }
+  output.innerHTML = lastNumber + " " + operationBuffer;
+  numberBuffer = 0;
+  input.innerHTML = numberBuffer;
+}
+
+
+let pressedOperation = (operation) =>{
+  switch (operation) {
+    case 'Clear':
+      if(output.innerHTML == '') output.innerHTML = '';
+      else output.innerHTML = lastNumber;
+      operationBuffer = ''
+      input.innerHTML = numberBuffer = 0;
+      break;
+
+    case 'Reset':
+      if(output.innerHTML == '') output.innerHTML = '';
+      else output.innerHTML = lastNumber = operationBuffer = '';
+      input.innerHTML = numberBuffer = 0;
+      break;
+
+    case '+/-':
+      input.innerHTML = numberBuffer *= -1;
+      break;
+
+    case ',':
+      if (!numberBuffer.includes('.')) input.innerHTML = numberBuffer += '.';
+      break;
+
+    case '=':
+      performOperation(operationBuffer);
+      break;
+      
+    default:
+      if(output.innerHTML == ''){
+        operationBuffer = operation;
+        lastNumber = numberBuffer;
+        output.innerHTML = numberBuffer + " " + operation;
+        input.innerHTML = numberBuffer = 0;
+      }
+
+      else{
+        operationBuffer = operation;
+        output.innerHTML = lastNumber + " " + operation
+      }
+  }
+}
